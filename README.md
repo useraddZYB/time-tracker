@@ -80,35 +80,26 @@ TimeTracker
 
   
 
-## 二，与 Profiler 区别
+## 二，说明
 
-Profiler  
 
-```
-<dependency>  
-	<groupId>com.hipu.util</groupId>
-  	<artifactId>utils</artifactId>
-  	<version>1.0.43</version>
-</dependency>
-```
-
-### 用途 / 共同点
+### 用途 
 
 > 1，代码级别耗时分析，不仅计算整个对外提供的接口（顶层函数）耗时；  
 > 2，还可以进一步分析该函数内部代码片段以及“子函数”的“片段/步骤“耗时；  
 > 3，用于分析整个函数内部各步骤的耗时，找出耗时较高的步骤，即找出性能瓶颈；   
 > 4，定位在：为性能优化前的，必要的定位问题阶段。
 
-### 区别
+### 特点
 
 > 1，TimeTracker（简称TT），为统计tp99、耗时区间分布等整体统计设计（提供配套统计脚本） --> 更有用  
 > 2，TT提供尽量简化的api，降低代码侵入性；输出单行json格式，Profiler为多行  --> 更好用  
 > 3，TT定位于线上全量请求耗时分析及日志打印（提供配套日志打印api、统计脚本） --> 更全面  
 > 4，TT提供自定义的耗时分布参数，供业务方使用，日志带耗时级别标识，方便grep定位 --> 个性化
 
-### 区别明细及示例
+### API介绍
 
-> 1，耗时分布统计：统计脚本tt_stat.sh及log4j配置修改示例log4j.pro.demo在index-util项目内  
+> 1，耗时分布统计：统计脚本tt_stat.sh及log4j配置修改示例log4j.pro.demo在项目resource目录内  
 > 2，简化api：  
 > > 步骤耗时打点：TimeTracker.step("步骤名");  
 > > 步骤耗时打点，带描述：TimeTracker.step("步骤名", "ids={}, type={}", ids, type);  
