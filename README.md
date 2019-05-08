@@ -41,16 +41,16 @@
 TimeTracker  
 
 ```
-<dependency>  
-	<groupId>com.yidian.serving.index</groupId>  
-	<artifactId>index-util</artifactId>  
-	<version>1.5.1</version>  
+<dependency>
+    <groupId>com.yidian.serving.index</groupId>
+    <artifactId>time-tracker</artifactId>
+    <version>0.0.1</version>
 </dependency>
 ```  
 
 ### 集成步骤  
 
-* 修改pom.xml，添加index-util依赖包；见上maven引入一节
+* 修改pom.xml，添加time-tracker依赖包；见上maven引入一节（time-tracker本身只依赖了slf4j和fastjson）
 * 修改log4j.properties，增加一个appendar；demo见依赖包里的log4j.pro.demo
 * 修改代码，添加埋点；发布环境运行；埋点demo见依赖包里的test示例
 * 执行shell统计脚本，需要提前将shell脚本手工copy或上传到服务器上；脚本在依赖包里
