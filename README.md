@@ -9,7 +9,7 @@
 
 # 耗时分析 & debug历史或实时
 
-## 一，TimeTracker 耗时追踪器
+# 一，TimeTracker 耗时追踪器
 
 ### 先看东西
 <img src="https://trello-attachments.s3.amazonaws.com/5b3212b3f0e8f4a9560720e6/5b2a2ad29e9c614a034bb5bc/2e7a105390b645c52edee25ea4cf8747/tt_report.jpg" width="475" height="492"/>
@@ -86,7 +86,7 @@ TimeTracker
 
   
 
-## 二，说明
+## 说明
 
 
 ### 用途 
@@ -118,7 +118,7 @@ TimeTracker
 > > 日志级别，方便定位：cat tt_stat.log | grep "slowLevel=30"
 
 
-## 三，与“火焰图”的区别
+## 与“火焰图”的区别
 
 ### 火焰图简介 
 
@@ -145,12 +145,12 @@ TimeTracker
 > 5，无法或极难定制化、改造、扩展等  
 > 6，火焰图方案的优点是：图片漂亮直观、代码零侵入；但是零侵入对于复杂逻辑系统、分布式调用系统来说，无法做到更精细的统计  
 
-### 在线服务debug增强
-可以把链路结果追加到，已有系统的debug调试页，提高定位问题效率，使用效果良好
+# 二，在线服务debug增强
+可以把链路结果追加到，已有系统的debug调试页，提高定位问题效率，使用效果极好
 
 ![](https://trello-attachments.s3.amazonaws.com/5be29a8c765178737b25f7a4/5b2a2ad29e9c614a034bb5bc/9dc3c8e2abfcf628908071f08780abc5/tt_debug.jpg)
 
-### 简单说几句，与阿里arthas的区别 
+## 简单说几句，与阿里arthas的区别 
 
 1，arthas功能更全面，代码无侵入性，但是在耗时调优这块，缺点是粒度过粗（方法）或过细（每一行代码），对参数、结果收集体验不好，其次是只能在线统计较短时间的请求，另外debug用户请求支持不够好，真正最需要的是进程内一个完整接口（底层函数）的完整片段逻辑的链路，而arthas只做到了单个方法级别，没啥用
 
