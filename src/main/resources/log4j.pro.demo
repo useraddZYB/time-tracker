@@ -1,0 +1,12 @@
+# 追加以下配置文件到项目的log4j.properties文件中，注意需要使用DEBUG级别，避免日志重复打印在业务日志里
+
+log4j.logger.com.yidian.serving.index.track = DEBUG, tt_stat
+
+log4j.appender.tt_stat = org.apache.log4j.DailyRollingFileAppender
+log4j.appender.tt_stat.File = ../logs/tt_stat.log
+log4j.appender.tt_stat.Encoding = UTF-8
+log4j.appender.tt_stat.Append = true
+log4j.appender.tt_stat.Threshold = DEBUG
+log4j.appender.tt_stat.DatePattern = '.'yyyy-MM-dd
+log4j.appender.tt_stat.layout = org.apache.log4j.PatternLayout
+log4j.appender.tt_stat.layout.ConversionPattern = %d{MM-dd HH:mm:ss} - %m%n
