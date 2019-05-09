@@ -79,6 +79,7 @@ TimeTracker
 * 单条耗时明细demo截图：  
 <img src="https://trello-attachments.s3.amazonaws.com/5b3212b3f0e8f4a9560720e6/5b2a2ad29e9c614a034bb5bc/7ec9e6f534ae61be5c962be1f9f0fe53/tt_report_detail.jpg" width="412" height="652"/>
 * 集成代码demo截图：  
+请参加源码中的test包下的示例demo类，添加了注释说明，end()埋点务必放在finally里
 <img src="https://trello-attachments.s3.amazonaws.com/5b3212b3f0e8f4a9560720e6/5b2a2ad29e9c614a034bb5bc/09623eb8334410d63d0960df6afe419a/tt_client.jpg" width="512" height="500"/>
 * 脚本及log4j示例的路径截图：  
 ![](https://trello-attachments.s3.amazonaws.com/5b3212b3f0e8f4a9560720e6/5b2a2ad29e9c614a034bb5bc/e2509744728ca9f942b881b2e09ef7a2/tt_util.jpg)
