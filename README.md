@@ -33,13 +33,21 @@
 针对进程内对外接口级别的，完整进程内逻辑调用链路的：代码片段耗时统计、串联debug信息、可查历史或线上接口问题   
 
 即做两件事：  
-1 进程内每个接口级别的，代码逻辑片段耗时统计；   
-2 接口debug，可以理解为自动串联好了方法片段调用关系链路   
+1 进程内每个接口级别的，代码逻辑片段耗时统计分析；   
+2 接口explain，可以理解为自动串联好了方法片段调用关系链路（作用上接近mysql explain分析的意思）   
  
 源码极其简单，依赖极少的第三方包，查历史慢请求、异常请求、在线查问题十分方便；当需要优化耗时的时候，可以使用自带的统计脚本统计代码片段级别的耗时分布  
 
-time-tracker在实际公司高并发系统内稳定运行一年多，无问题无bug，使用效果极佳  
+time-tracker在实际公司高并发系统内稳定运行一年多，无问题无bug，使用效果极佳
+友商（朋友的大厂）在推进使用中  
 咨询方式：钉钉号 najq2k3，微信号 zybpf806119623  
+
+### 所以说人话，能干啥？
+```
+想要查问题：“你用TT；耗时分析是赠送的”
+想要优化性能：“你用TT；explain是赠送的”
+又想查问题又想要优化性能：“恭喜你，答对了！！！”
+```
 
 # 二，先看东西（耗时分析 & debug历史或实时）
 
@@ -50,6 +58,143 @@ time-tracker在实际公司高并发系统内稳定运行一年多，无问题�
 ### 1.2 关于代码片段链路  （json格式天然的树状结构契合方法调用，截图未格式化）
 
 ![](https://trello-attachments.s3.amazonaws.com/5be29a8c765178737b25f7a4/5b2a2ad29e9c614a034bb5bc/9dc3c8e2abfcf628908071f08780abc5/tt_debug.jpg)
+
+# 三，DEMO
+### 直接用，不需要db、不需要redis、更不需要kafka、elk，上来就直接用
+### 文档就这一页，api就七八个，学习成本almost为0
+```
+/**
+ * 注意两点：
+ * 1，接口最外层的begin使用无参数的begin()，即只有一个，之后的方法最开始使用带参数的begin(String functionName, 其他参数)
+ * 2，方法的end请使用try finally结构放在finally里面，保证每个方法可以执行到end()；否则方法父子关系及方法耗时计算会不准确
+ *
+ * 说明：
+ * 1，也可以将关键代码片段的catch到的异常摘要放进来，比如在catch里添加:
+ * TimeTracker.step("enterCatch", "functionName={}, errorMsg={}", "queryIds", e.getMessage());
+ * 2，可以自定义选择对接口链路上，哪些方法做 begin end，如果不关心的不重要的方法可以不做begin end
+ * 3，jar包里的方法也可以加上begin end step埋点
+ * 4，最烦人的耗时计算底层直接做了，可以不用再手工计时相减了
+ * 5，step() 输出完全可以替换掉很多的原本的系统日志
+ *
+ * @author zyb
+ * @Date 2018/6/20 下午4:05
+ **/
+public class TestTimeTracker {
+
+    /**
+     *
+     * @param args
+     */
+    public static void main(String[] args) throws Exception {
+
+        TimeTracker.config(TrackConfig.newBuilder().minCost(5).hotStep("queryIdFromRedis").slowLevel(0, 500, 1000).build());
+        TimeTracker.begin();   // *** 启动，注意接口最外层首次调用的是无参数的begin方法，内部方法不能再用
+
+        try {
+            List<Long> ids = queryId(); // *** 内部有详细打点
+
+            String type = "news";
+            queryObj(ids, type);
+            TimeTracker.step("queryObj", "ids={}, type={}", ids, type); // *** 附带备注
+
+            // 模拟 filter 逻辑
+            Thread.sleep(50);
+            TimeTracker.step("filter"); // *** 简单的片段计时
+        } finally {
+            // *** 打印报告
+            TimeTracker.end();
+
+            // 这里一般用作描述当前请求/接口，可以将http请求放进去，或者关键参数放进去，也可以将关键的结果值，比如物品数量放进去
+            TrackReport report = TimeTracker.getReport("sessionId={}", System.currentTimeMillis());
+            System.out.println(report);
+            TrackReporter.logReportStat("channelServlet", report);
+        }
+    }
+    /**
+     * queryId系列方法
+     *
+     * @return
+     * @throws Exception
+     */
+    private static List<Long> queryId() throws Exception {
+        TimeTracker.begin("queryId");   // *** 函数内部需要分段计时的话，函数也需要begin(name)，注意内部方法需要使用带参数的begin(参数)
+
+        List<Long> ids;
+        try {
+            ids = null;
+            ids = queryIdFromRedis();
+            TimeTracker.step("queryIdFromRedis");
+            if(null == ids) {
+                ids = queryIdFromMongo();
+            }
+        } finally {
+            TimeTracker.end();   // *** 与begin()配套
+        }
+
+        return ids;
+    }
+    private static List<Long> queryIdFromRedis() throws Exception {
+        Thread.sleep(200L);
+        return null;
+    }
+    private static List<Long> queryIdFromMongo() throws Exception {
+        TimeTracker.begin("queryIdFromMongo");
+
+        List<Long> ids;
+        try {
+            Thread.sleep(300L);
+            ids = new ArrayList<>();
+            ids.add(1L);
+            ids.add(2L);
+            ids.add(3L);
+            TimeTracker.step("newIds");
+
+            Thread.sleep(400L);
+            TimeTracker.resetWatch();
+            ids = addRec(ids);
+        } finally {
+            TimeTracker.end();
+        }
+
+        /*List<Long> ids = new ArrayList<>();
+        ids.add(1L);
+        ids.add(2L);
+        ids.add(3L);
+        ids = addRec(ids);*/
+
+        return ids;
+    }
+
+    private static List<Long> addRec(List<Long> ids) throws Exception {
+        TimeTracker.begin("addRec", "ids={}", ids);
+
+        try {
+            ids.add(9L);
+            Thread.sleep(200L);
+            TimeTracker.step("addRec1");
+
+            Thread.sleep(400L);
+            TimeTracker.step("addRec2");
+        } finally {
+            TimeTracker.end();
+        }
+
+        return ids;
+    }
+    /**
+     * queryObj系列方法
+     *
+     * @param ids
+     * @param type
+     * @return
+     * @throws Exception
+     */
+    private static List<Object> queryObj(List<Long> ids, String type) throws Exception {
+        Thread.sleep(1200L);
+        return new ArrayList<>();
+    }
+}
+```
 
 # 三，背景
 
@@ -75,7 +220,7 @@ time-tracker在实际公司高并发系统内稳定运行一年多，无问题�
 > > 
 > > 更进一步，对函数片段（调用栈+片段）做耗时分布统计；于此可以去解决 1 了
 
-### 2 干嘛用（关于debug查问题）
+### 2 干嘛用（关于explain查问题）
 
 * 线上反馈问题说我们服务返回数据有误，比如：超时、很慢、数据少、没数据等等，很难或没法收集到完整的请求参数，无法在线下重放测试
 * 无法复现的线上问题，同样的请求一会正常一会不正常
@@ -95,7 +240,7 @@ time-tracker在实际公司高并发系统内稳定运行一年多，无问题�
 TT的粒度定位在 方法+代码片段（代码片段指的是一个方法体里的一段代码，一个方法可以有多个片段）
 ```
 
-# 四，在线或离线debug
+# 四，在线或离线explain
 
 #### 在线：可以把链路结果追加到，已有系统的debug调试页，提高定位问题效率，使用效果极好
 #### 离线：由于链路日志已经全量（或高于耗时阈值）输出在独立的日志文件中，所以可以查线上产品运营测试等反馈的问题，根据关键参数grep日志即可；
