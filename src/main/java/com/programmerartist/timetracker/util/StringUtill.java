@@ -1,9 +1,9 @@
-package com.yidian.serving.index.track.util;
+package com.programmerartist.timetracker.util;
 
 import java.util.regex.Matcher;
 
 /**
- * @Author zyb
+ * @Author 程序员Artist
  * @Date 2018/6/20 下午2:47
  **/
 public class StringUtill {

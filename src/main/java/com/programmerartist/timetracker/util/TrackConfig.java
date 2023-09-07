@@ -1,6 +1,6 @@
-package com.yidian.serving.index.track.util;
+package com.programmerartist.timetracker.util;
 
-import com.yidian.serving.index.track.TimeTracker;
+import com.programmerartist.timetracker.TimeTracker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,7 +10,7 @@ import java.util.concurrent.*;
 /**
  * 个性化配置
  *
- * @author zyb
+ * @author 程序员Artist
  * @Date 2018/6/28 下午7:38
  **/
 public class TrackConfig {

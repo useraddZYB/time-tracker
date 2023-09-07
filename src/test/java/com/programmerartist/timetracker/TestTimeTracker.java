@@ -1,6 +1,6 @@
-package com.yidian.serving.index.track;
+package com.programmerartist.timetracker;
 
-import com.yidian.serving.index.track.util.TrackConfig;
+import com.programmerartist.timetracker.util.TrackConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.List;
  * 4，最烦人的耗时计算底层直接做了，可以不用再手工计时相减了
  * 5，step() 输出完全可以替换掉很多的原本的系统日志
  *
- * @author zyb
+ * @author 程序员Artist
  * @Date 2018/6/20 下午4:05
  **/
 public class TestTimeTracker {

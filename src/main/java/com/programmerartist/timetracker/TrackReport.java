@@ -1,11 +1,11 @@
-package com.yidian.serving.index.track;
+package com.programmerartist.timetracker;
 
-import com.yidian.serving.index.track.util.TrackConfig;
+import com.programmerartist.timetracker.util.TrackConfig;
 
 /**
  * 耗时分布报告
  *
- * @author zyb
+ * @author 程序员Artist
  * @Date 2018/6/29 上午10:37
  **/
 public class TrackReport {

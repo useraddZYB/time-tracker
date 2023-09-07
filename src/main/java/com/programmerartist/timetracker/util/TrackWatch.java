@@ -1,4 +1,4 @@
-package com.yidian.serving.index.track.util;
+package com.programmerartist.timetracker.util;
 
 import java.util.concurrent.TimeUnit;
 
@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
  *  * 基于上述两原因，导致历史代码出现：
  *  * 一个方法里生成了多个Stopwatch（由于难用怕用错，索性每次重新生成）
  *
- * @Author zyb
+ * @Author 程序员Artist
  * @Date 2018/7/19 下午7:51
  *
  **/

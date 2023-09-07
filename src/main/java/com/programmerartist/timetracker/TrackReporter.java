@@ -1,7 +1,7 @@
-package com.yidian.serving.index.track;
+package com.programmerartist.timetracker;
 
-import com.yidian.serving.index.track.util.TrackConfig;
-import com.yidian.serving.index.track.util.StringUtill;
+import com.programmerartist.timetracker.util.StringUtill;
+import com.programmerartist.timetracker.util.TrackConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * "性能"追踪：原始追踪数据打印器
  *
- * @author zyb
+ * @author 程序员Artist
  * @Date 2018/6/26 上午9:57
  **/
 public class TrackReporter {

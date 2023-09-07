@@ -1,9 +1,9 @@
-package com.yidian.serving.index.track;
+package com.programmerartist.timetracker;
 
 import com.alibaba.fastjson.JSONObject;
-import com.yidian.serving.index.track.util.TrackConfig;
-import com.yidian.serving.index.track.util.StringUtill;
-import com.yidian.serving.index.track.util.TrackWatch;
+import com.programmerartist.timetracker.util.TrackConfig;
+import com.programmerartist.timetracker.util.StringUtill;
+import com.programmerartist.timetracker.util.TrackWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +21,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * 用法：
  * 示例见 TestTimeTracker.main()
  *
- * @author  zyb
+ * @author  程序员Artist
  * @Date 2018/6/19 下午7:40
  **/
 public class TimeTracker {
@@ -552,7 +552,7 @@ public class TimeTracker {
     /**
      * 片段节点
      *
-     * @author zyb
+     * @author 程序员Artist
      * @Date 2018/6/20 上午11:04
      **/
     protected static class TrackNode {
@@ -722,7 +722,7 @@ public class TimeTracker {
      * 追踪器本身异常，处理类
      * 降低侵入性，追踪器本身或使用有误造成异常，则停止追踪器
      *
-     * @author zyb
+     * @author 程序员Artist
      * @Date 2018/6/26 下午12:12
      **/
     public static class TrackExceptionHandler {
